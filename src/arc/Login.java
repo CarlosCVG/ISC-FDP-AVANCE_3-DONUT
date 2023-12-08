@@ -1,5 +1,6 @@
 package arc;
 
+//Librerias
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,17 +8,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+
 public class Login extends javax.swing.JFrame {
-    
+    //Llamar a la clase conexion. Conectar.
     Conexion cx;
     
     public Login() {
         cx = new Conexion();
         cx.conectar(); 
         initComponents();
+        //Centrar JFrame
         this.setLocationRelativeTo(null);
     }
-   
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -228,50 +231,54 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_textContraseñaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+    //Metodo sistema. Llamado al usar el botón.
     sistema();       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void textUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textUsuarioActionPerformed
-      
+    
     }//GEN-LAST:event_textUsuarioActionPerformed
-public void sistema(){
+    public void sistema(){
+    
         //Aqui se llama a la base de datos 
         try {
             String user = textUsuario.getText();
             String password = String.valueOf(textContraseña.getPassword());
             String id;
             String query = "SELECT * FROM alumnos WHERE nombre1 = '"+user+"' and matricula = '"+password+"'";
+            //Preparar una declaración
             Statement st = cx.conectar().createStatement();
+            //Ejecutar el Query
             ResultSet rs = st.executeQuery(query);
+            
         //Se verifica la existencia del usuario con una ventana emergente de confirmacion
-             if(rs.next()){
-                
+        //rs manda true o false
+            if(rs.next()){
                 id = rs.getString("id");
-                JOptionPane.showMessageDialog(null, "El usuario existe en la base de datos");
+                JOptionPane.showMessageDialog(null, "Datos correctos. Bienvenido a ARC!!!.");
                 Alumno nF= new Alumno();
+                //Llamar a metodo.
                 nF.TraerDatos(user, password, id);
                 nF.setVisible(true);
                 this.dispose();
-                    
             } 
             else {
-                JOptionPane.showMessageDialog(null, "El usuario no existe en la base de datos");
+                JOptionPane.showMessageDialog(null, "El nombre o la contraseña son incorrectas.");
             }
+            //Error
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public static void main(String args[]) {
-       
-
-      
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
             }
-        });
+        }
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
